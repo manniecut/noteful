@@ -16,7 +16,7 @@ function Note(props) {
             </button>
             <div className='Note__dates'>
                 <div className='Note__dates-modified'>
-                    {props.modified}
+                    Last modified: {props.modified}
                 </div>
             </div>
         </div>

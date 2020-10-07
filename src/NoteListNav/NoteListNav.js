@@ -11,7 +11,7 @@ function NoteListNav(props) {
                     <li key={folder.id}>
                         <NavLink
                             className='NoteListNav__folder-link'
-                            to={'/folder/${folder.id}'}>
+                            to={`/folder/${folder.id}`}>
                             {folder.name}
                         </NavLink>
                     </li>

@@ -10,7 +10,7 @@ function NotePageMain(props) {
                 name={props.note.name}
                 modified={props.note.modified}
                 />
-                <div classname='NotePageMain__content'>
+                <div className='NotePageMain__content'>
                     {props.note.content.split(/\n \r|\n/).map((para, i) =>
                     <p key ={i}>{para}</p>
                     )}
