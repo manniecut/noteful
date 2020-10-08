@@ -1,11 +1,12 @@
 import React from 'react'
 
-const BookmarksContext = React.createContext({
+const NotesContext = React.createContext({
     notes: [],
     folders: [],
     addNote: () => {},
     addFolder: () => {},
     deleteNote: () => {},
+    fetchError: null,
 })
 
-export default BookmarksContext
+export default NotesContext

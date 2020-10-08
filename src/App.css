@@ -22,7 +22,6 @@
   grid-area: header;
   padding-left: 20px;
   padding-top: 22px;
-
 }
 
 .App__header a {
@@ -35,4 +34,17 @@
   grid-area: main;
   height: calc(100vh - 120px);
   overflow: auto;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.NoteListSidebar {
+  padding-left: 1em;
+}
+
+.NoteListSidebar {
+  text-align: left;
 }

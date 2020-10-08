@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CircleButton from '../CircleButton/CircleButton';
 import NotesContext from '../NotesContext'
 import { findNote, findFolder } from '../notes-helpers'
+import PropTypes from 'prop-types';
 import './NotePageNav.css'
 
 class NotePageNav extends Component {
@@ -13,6 +14,23 @@ class NotePageNav extends Component {
             params: {}
         }
     }
+
+    static propTypes = {
+        notes: PropTypes.arrayOf(PropTypes.shape({
+            content: PropTypes.string,
+            folderId: PropTypes.string,
+            id: PropTypes.string,
+            modified: PropTypes.string,
+            name: PropTypes.string
+        })),
+        folders: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.string,
+            name: PropTypes.string
+        })),
+        noteId: PropTypes.string,
+        goBack: PropTypes.func
+    }
+
     static contextType = NotesContext;
 
     render() {

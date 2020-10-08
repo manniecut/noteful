@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Note from '../Note/Note';
 import NotesContext from '../NotesContext';
 import { findNote } from '../notes-helpers';
+import PropTypes from 'prop-types';
 import './NotePageMain.css';
 
 class NotePageMain extends Component {
@@ -11,6 +12,18 @@ class NotePageMain extends Component {
         }
     }
     static contextType = NotesContext
+
+    static propTypes = {
+        notes: PropTypes.arrayOf(PropTypes.shape({
+            content: PropTypes.string,
+            folderId: PropTypes.string,
+            id: PropTypes.string,
+            modified: PropTypes.string,
+            name: PropTypes.string
+        })),
+        noteId: PropTypes.string
+    }
+
 
     handleDeleteNote = (noteId) => {
         this.props.history.push('/')

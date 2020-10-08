@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import NotesContext from '../NotesContext';
+import PropTypes from 'prop-types';
 import './Note.css'
 
 
@@ -8,7 +9,16 @@ class Note extends React.Component {
     static defaultProps = {
         onDeleteNote: () => { }
     }
+
+    static propTypes = {
+        id: PropTypes.string,
+        name: PropTypes.string,
+        modified: PropTypes.string,
+        onDeleteNote: PropTypes.func
+    }
+
     static contextType = NotesContext;
+
     handleclickDelete = e => {
         e.preventDefault()
         const noteId = this.props.id

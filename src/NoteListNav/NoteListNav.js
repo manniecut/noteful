@@ -2,11 +2,30 @@ import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import CircleButton from '../CircleButton/CircleButton'
 import NotesContext from '../NotesContext';
-import { countNotesForFolder } from '../notes-helpers';
+import PropTypes from 'prop-types';
 import './NoteListNav.css'
 
 class NoteListNav extends Component {
     static contextType = NotesContext;
+
+    static defaultProps = {
+        notes: [],
+        folders: []
+    }
+
+    static propTypes = {
+        notes: PropTypes.arrayOf(PropTypes.shape({
+            content: PropTypes.string,
+            folderId: PropTypes.string,
+            id: PropTypes.string,
+            modified: PropTypes.string,
+            name: PropTypes.string
+        })),
+        folders: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.string,
+            name: PropTypes.string
+        })),
+    }
 
     render() {
         const { folders = [], notes = [] } = this.context
@@ -28,7 +47,7 @@ class NoteListNav extends Component {
                         to='/add-folder'
                         type='button'
                         className='NoteListNav__add-folder-button'>
-                        FOLDER
+                        +FOLDER
                 </CircleButton>
                 </div>
             </div>
