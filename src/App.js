@@ -56,7 +56,6 @@ class App extends Component {
     })
   }
 
-  //this function works by creating 2 variables to correspond with the state, and then mapping them out to their respective links
   renderNavRoutes() {
     return (
       <>

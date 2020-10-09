@@ -34,7 +34,7 @@ class NoteListMain extends Component {
         const { notes = [] } = this.context
         const notesForFolder = getNotesForFolder(notes, folderId)
         return (
-            <section className='NoteListMain' >
+            <section className='NoteListMain'>
                 <ul>
                     {notesForFolder.map(note =>
                         <li key={note.id}>
