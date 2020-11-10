@@ -44,6 +44,12 @@ class App extends Component {
     });
   };
 
+  handleDeleteFolder = (folderId) => {
+    this.setState({
+      folders: this.state.folders.filter(folder => folder.id !== folderId)
+    });
+  };
+
   handleAddFolder = folder => {
     this.setState({
       folders: [...this.state.folders, folder]
@@ -55,6 +61,10 @@ class App extends Component {
       notes: [...this.state.notes, note]
     })
   }
+
+  handleUpdateNote = note => { };
+
+  handleUpdateFolder = folder => { };
 
   renderNavRoutes() {
     return (
@@ -71,6 +81,8 @@ class App extends Component {
           <Route path='/note/:noteId' component={NotePageNav} />
           <Route path='/add-note' component={AddNote} />
           <Route path='/add-folder' component={AddFolder} />
+          <Route path='/edit/note/:noteId' component={EditNote} />
+          <Route path='/edit/folder/:folderId' component={EditFolder} />
         </NotesError>
       </>
     )
@@ -98,9 +110,12 @@ class App extends Component {
     const value = {
       notes: this.state.notes,
       folders: this.state.folders,
-      deleteNote: this.handleDeleteNote,
       addNote: this.handleAddNote,
       addFolder: this.handleAddFolder,
+      deleteNote: this.handleDeleteNote,
+      deleteFolder: this.handleDeleteFolder,
+      updateNote: this.handleUpdateNote,
+      updateFolder: this.handleUpdateFolder,
       fetchError: this.state.error
     };
     return (
