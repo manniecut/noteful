@@ -1,17 +1,9 @@
-/*
-Create a new component AddNote that implements a form to capture the name, content and folder for a new Note. 
-Submit to the POST /notes endpoint on the server. Add validation to ensure that the name of the note is not left blank. 
-The folder should be selected from a list of existing folders. 
-Ensure that errors are properly handled. 
-Add a button to the note list page to invoke this new form.
-*/
 import React, { Component } from 'react';
 import NotesContext from '../NotesContext';
 import ValidError from '../ValidError';
-import { getRandomHexString } from '../notes-helpers';
 import PropTypes from 'prop-types';
 
-class AddNote extends Component {
+class EditNote extends Component {
     static contextType = NotesContext;
 
     static defaultProps = {
@@ -38,8 +30,38 @@ class AddNote extends Component {
             noteContent: {
                 value: '',
                 touched: false
+            },
+            noteId: {
+                value: ''
             }
         };
+    }
+
+    componentDidMount() {
+        const noteId = this.props.match.params.noteId
+        fetch(`https://localhost:9090/api/notes/${noteId}`, {
+            method: 'GET'
+        })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(error => {
+                        throw error
+                    })
+                }
+                return res.json()
+            })
+            .then(note => {
+                this.setState({
+                    selectedFolderId: { value: note.folderId },
+                    noteTitle: { value: note.title },
+                    noteContent: { value: note.content },
+                    noteId: { value: note.id }
+                })
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({ error })
+            })
     }
 
     handleCancel = () => {
@@ -48,21 +70,17 @@ class AddNote extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        const randomNoteId = `${getRandomHexString()}-ffaf-11e8-8eb2-f2801f1b9fd1`
-
-        const { selectedFolderId, noteTitle, noteContent } = this.state;
-
+        const { selectedFolderId, noteTitle, noteContent, noteId } = this.state;
         const note = {
             folderId: selectedFolderId.value,
-            name: noteTitle.value,
+            title: noteTitle.value,
             content: noteContent.value,
             modified: new Date(),
-            id: randomNoteId
+            id: noteId.value
         }
-
         this.setState({ error: null })
-        fetch('http://localhost:9090/notes', {
-            method: 'POST',
+        fetch('http://localhost:9090/api/notes', {
+            method: 'PATCH',
             body: JSON.stringify(note),
             headers: {
                 'content-type': 'application/json'
@@ -77,7 +95,7 @@ class AddNote extends Component {
                 return res.json()
             })
             .then(note => {
-                this.context.addNote(note)
+                this.context.updateNote(note)
                 this.props.history.push('/')
             })
             .catch(error => {
@@ -114,8 +132,11 @@ class AddNote extends Component {
 
     render() {
         const folders = this.context.folders;
+        const folderId = this.state.selectedFolderId.value
+        const title = this.state.noteTitle.value
+        const content = this.state.noteContent.value
         return (
-            <section className='AddNote'>
+            <section className='EditNote'>
                 <h2>Add a new note</h2>
                 <form
                     className='AddNote__form'
@@ -129,6 +150,7 @@ class AddNote extends Component {
                         <select
                             id='folder'
                             name='folder'
+                            value={folderId}
                             onChange={e => this.handleFolderSelection(e.target.value)}
                         >
                             {folders.map(option => (
@@ -147,7 +169,7 @@ class AddNote extends Component {
                             type='text'
                             name='title'
                             id='title'
-                            placeholder='My New Note'
+                            value={title}
                             onChange={e => this.handleNoteTitleUpdate(e.target.value)}
                             required
                         />
@@ -157,7 +179,7 @@ class AddNote extends Component {
                         <textarea
                             name='content'
                             id='content'
-                            placeholder='Type your note here'
+                            value={content}
                             onChange={e => this.handleNoteContentUpdate(e.target.value)}
                             required
                         />
@@ -184,4 +206,4 @@ class AddNote extends Component {
 
 }
 
-export default AddNote; 
+export default EditNote; 

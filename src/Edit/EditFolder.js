@@ -1,22 +1,14 @@
-/*
-Create a new component AddFolder that implements a form to capture the name of a new folder from the user. 
-This form should submit the name of the new folder to the POST /folders endpoint on the server. 
-Ensure that any errors are properly handled. 
-Add a button to the navigation to invoke the new form.
-*/
-
 import React, { Component } from 'react';
 import NotesContext from '../NotesContext';
-import { getRandomHexString } from '../notes-helpers';
 import ValidError from '../ValidError';
 import PropTypes from 'prop-types';
 
-class AddFolder extends Component {
+class EditFolder extends Component {
     static contextType = NotesContext;
 
     static defaultProps = {
         history: {
-            goBack: () => {}
+            goBack: () => { }
         }
     }
 
@@ -29,46 +21,53 @@ class AddFolder extends Component {
 
         this.state = {
             error: null,
-            folderName: {
-                value: '',
-                touched: false
-            }
-        }
+            folderId: '',
+            folderTitle: '',
+        };
     }
 
-
-    validateContent() {
-        const name = this.state.folderName.value.trim();
-        if(name.length === 0) {
-            return 'Folder name cannot be blank'
-        }
-    }
-
-    handleFolderNameUpdate = name => {
-        this.setState({
-            folderName: {value: name, touched: true}
+    componentDidMount() {
+        const folderId = this.props.match.params.folderId
+        fetch(`http://localhost:9090/api/folders/${folderId}`, {
+            method: 'GET'
         })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(error => {
+                        throw error
+                    })
+                }
+                return res.json()
+            })
+            .then(folder => {
+                this.setState({
+                    selectedFolderId: folder.id,
+                    folderTitle: folder.title
+                })
+            })
+            .catch(error => {
+                console.log(error)
+                this.setState({ error })
+            })
     }
 
     handleCancel = () => {
         this.props.history.goBack();
-    }
+    };
 
     handleSubmit = e => {
         e.preventDefault();
-        const randomFolderId = `${getRandomHexString()}-ffaf-11e8-8eb2-f2801f1b9fd1`
-
         const folder = {
-            name: this.state.folderName.value,
-            id: randomFolderId //duplicate ID results in error
+            id: this.state.folderId,
+            title: this.state.folderTitle
         }
 
         this.setState({ error: null })
-        fetch('http://localhost:9090/folders', {
-            method: 'POST',
+        fetch('http://localhost:9090/api/folders', {
+            method: 'PATCH',
             body: JSON.stringify(folder),
             headers: {
-                'content-type' : 'application/json'
+                'content-type': 'application/json'
             }
         })
             .then(res => {
@@ -80,7 +79,7 @@ class AddFolder extends Component {
                 return res.json()
             })
             .then(folder => {
-                this.context.addFolder(folder)
+                this.context.updateFolder(folder)
                 this.props.history.push('/')
             })
             .catch(error => {
@@ -89,7 +88,22 @@ class AddFolder extends Component {
             })
     }
 
+    validateContent() {
+        const name = this.state.folderTitle.trim();
+        if (name.length === 0) {
+            return 'Folder name cannot be blank'
+        }
+    }
+
+    handleFolderTitleUpdate = name => {
+        this.setState({
+            folderTitle: name
+        })
+    }
+
+
     render() {
+        const folderTitle = this.state.folderTitle;
         return (
             <section className='AddFolder'>
                 <h2>Add a new folder</h2>
@@ -102,16 +116,16 @@ class AddFolder extends Component {
                     </div>
                     <div>
                         <label htmlFor='name'>Folder Name</label>
-                        <input 
+                        <input
                             type='text'
                             name='name'
                             id='name'
-                            placeholder='My New Folder'
+                            value={folderTitle}
                             onChange={e => this.handleFolderNameUpdate(e.target.value)}
                             required
                         />
                         {this.state.folderName.touched && (
-                        <ValidError message={this.validateContent()}/>)}
+                            <ValidError message={this.validateContent()} />)}
                     </div>
                     <div className='AddFolder__buttons'>
                         <button
@@ -133,4 +147,4 @@ class AddFolder extends Component {
     }
 }
 
-export default AddFolder; 
+export default EditFolder; 

@@ -1,10 +1,10 @@
+
 import React, { Component } from 'react';
 import NotesContext from '../NotesContext';
 import ValidError from '../ValidError';
-import { getRandomHexString } from '../notes-helpers';
 import PropTypes from 'prop-types';
 
-class EditFolder extends Component {
+class AddNote extends Component {
     static contextType = NotesContext;
 
     static defaultProps = {
@@ -41,20 +41,16 @@ class EditFolder extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        const randomNoteId = `${getRandomHexString()}-ffaf-11e8-8eb2-f2801f1b9fd1`
-
         const { selectedFolderId, noteTitle, noteContent } = this.state;
-
         const note = {
             folderId: selectedFolderId.value,
-            name: noteTitle.value,
+            title: noteTitle.value,
             content: noteContent.value,
             modified: new Date(),
-            id: randomNoteId
         }
 
         this.setState({ error: null })
-        fetch('http://localhost:9090/notes', {
+        fetch('http://localhost:9090/api/notes', {
             method: 'POST',
             body: JSON.stringify(note),
             headers: {
@@ -108,7 +104,7 @@ class EditFolder extends Component {
     render() {
         const folders = this.context.folders;
         return (
-            <section className='EditFolder'>
+            <section className='AddNote'>
                 <h2>Add a new note</h2>
                 <form
                     className='AddNote__form'
@@ -177,4 +173,4 @@ class EditFolder extends Component {
 
 }
 
-export default EditFolder; 
+export default AddNote; 

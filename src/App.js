@@ -6,8 +6,10 @@ import NotePageMain from './NotePageMain/NotePageMain';
 import NotePageNav from './NotePageNav/NotePageNav';
 import NotesContext from './NotesContext';
 import NotesError from './NotesError/NotesError';
-import AddFolder from './AddFolder/AddFolder';
-import AddNote from './AddNote/AddNote';
+import AddFolder from './Add/AddFolder';
+import AddNote from './Add/AddNote';
+import EditNote from './Edit/EditNote';
+import EditFolder from './Edit/EditFolder';
 import './App.css';
 
 class App extends Component {
@@ -19,8 +21,8 @@ class App extends Component {
 
   componentDidMount() {
     Promise.all([
-      fetch('http://localhost:9090/notes'),
-      fetch('http://localhost:9090/folders')
+      fetch('http://localhost:9090/api/notes'),
+      fetch('http://localhost:9090/api/folders')
     ])
       .then(([notesResponse, foldersResponse]) => {
         if (!notesResponse.ok)
@@ -62,9 +64,27 @@ class App extends Component {
     })
   }
 
-  handleUpdateNote = note => { };
+  handleUpdateNote = updatedNote => {
+    const newNotes = this.state.notes.map(note =>
+      (note.id === updatedNote.id)
+        ? updatedNote
+        : note
+    )
+    this.setState({
+      notes: newNotes
+    })
+  };
 
-  handleUpdateFolder = folder => { };
+  handleUpdateFolder = updatedFolder => {
+    const newFolders = this.state.folders.map(folder =>
+      (folder.id === updatedFolder.id)
+      ? updatedFolder
+      : folder
+      )
+      this.setState({
+        folders: newFolders
+      })
+  };
 
   renderNavRoutes() {
     return (
