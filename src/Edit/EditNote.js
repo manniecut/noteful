@@ -82,9 +82,9 @@ class EditNote extends Component {
         fetch('http://localhost:9090/api/notes', {
             method: 'PATCH',
             body: JSON.stringify(note),
-            headers: {
+            /*headers: {
                 'content-type': 'application/json'
-            }
+            }*/
         })
             .then(res => {
                 if (!res.ok) {

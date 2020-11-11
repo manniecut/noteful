@@ -56,9 +56,9 @@ class AddFolder extends Component {
         fetch('http://localhost:9090/api/folders', {
             method: 'POST',
             body: JSON.stringify(folder),
-            headers: {
+            /*headers: {
                 'content-type': 'application/json'
-            }
+            }*/
         })
             .then(res => {
                 if (!res.ok) {

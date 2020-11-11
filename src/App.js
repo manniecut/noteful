@@ -29,7 +29,6 @@ class App extends Component {
           return notesResponse.json().then(e => Promise.reject(e));
         if (!foldersResponse.ok)
           return foldersResponse.json().then(e => Promise.reject(e));
-
         return Promise.all([notesResponse.json(), foldersResponse.json()]);
       })
       .then(([notes, folders]) => {
@@ -78,12 +77,12 @@ class App extends Component {
   handleUpdateFolder = updatedFolder => {
     const newFolders = this.state.folders.map(folder =>
       (folder.id === updatedFolder.id)
-      ? updatedFolder
-      : folder
-      )
-      this.setState({
-        folders: newFolders
-      })
+        ? updatedFolder
+        : folder
+    )
+    this.setState({
+      folders: newFolders
+    })
   };
 
   renderNavRoutes() {

@@ -1,8 +1,3 @@
-/*
-Define an error boundary component.
-Add this component to specific points in your component structure.
-*/
-
 import React, { Component } from 'react';
 
 export default class NotesError extends Component {
