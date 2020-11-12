@@ -16,8 +16,8 @@ class NoteListNav extends Component {
     static propTypes = {
         notes: PropTypes.arrayOf(PropTypes.shape({
             content: PropTypes.string,
-            folderId: PropTypes.string,
-            id: PropTypes.string,
+            folderId: PropTypes.number,
+            id: PropTypes.number,
             modified: PropTypes.string,
             name: PropTypes.string
         })),
@@ -28,7 +28,7 @@ class NoteListNav extends Component {
     }
 
     render() {
-        const { notes = [], folders = [] } = this.context
+        const { folders = [] } = this.context
         return (
             <div className='NoteListNav' >
                 <ul className='NoteListNav__list'>
@@ -36,7 +36,7 @@ class NoteListNav extends Component {
                         <li key={folder.id}>
                             <NavLink
                                 className='NoteListNav__folder-link'
-                                to={`/folder/${folder.id}`}>
+                                to={`/folders/${folder.id}`}>
                                 {folder.title}
                             </NavLink>
                         </li>

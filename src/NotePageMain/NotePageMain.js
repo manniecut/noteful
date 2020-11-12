@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Note from '../Note/Note';
 import NotesContext from '../NotesContext';
 import { findNote } from '../notes-helpers';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 import './NotePageMain.css';
 
 class NotePageMain extends Component {
@@ -12,18 +12,18 @@ class NotePageMain extends Component {
         }
     }
     static contextType = NotesContext
-
-    static propTypes = {
-        notes: PropTypes.arrayOf(PropTypes.shape({
-            content: PropTypes.string,
-            folderId: PropTypes.string,
-            id: PropTypes.string,
-            modified: PropTypes.string,
-            name: PropTypes.string
-        })),
-        noteId: PropTypes.string
-    }
-
+    /*
+        static propTypes = {
+            notes: PropTypes.arrayOf(PropTypes.shape({
+                content: PropTypes.string,
+                folderId: PropTypes.number,
+                id: PropTypes.number,
+                modified: PropTypes.string,
+                name: PropTypes.string
+            })),
+            noteId: PropTypes.string
+        }
+    */
 
     handleDeleteNote = (noteId) => {
         this.props.history.push('/')
@@ -31,13 +31,13 @@ class NotePageMain extends Component {
 
     render() {
         const { notes = [] } = this.context
-        const { noteId } = this.props.match.params
-        const note = findNote(notes, noteId) || { content: '' }
+        const id = parseInt(this.props.match.params.note_Id)
+        const note = findNote(notes, id) || { content: '' }
         return (
             <section className='NotePageMain'>
                 <Note
                     id={note.id}
-                    name={note.name}
+                    name={note.title}
                     modified={note.modified}
                     onDeleteNote={this.handleDeleteNote}
                 />
@@ -48,6 +48,7 @@ class NotePageMain extends Component {
                 </div>
             </section>
         )
+
     }
 }
 

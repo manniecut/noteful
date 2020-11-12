@@ -11,8 +11,8 @@ class Note extends React.Component {
     }
 
     static propTypes = {
-        id: PropTypes.string,
-        name: PropTypes.string,
+        id: PropTypes.number,
+        title: PropTypes.string,
         modified: PropTypes.string,
         onDeleteNote: PropTypes.func
     }
@@ -39,17 +39,20 @@ class Note extends React.Component {
         )
     }
     render() {
-        const { name, id, modified } = this.props
+        const { name, id, modified, content } = this.props
         return (
             <div className='Note'>
                 <h2 className='Note__title'>
-                    <Link to={`/note/${id}`}>
+                    <Link to={`/notes/${id}`}>
                         {name}
                     </Link>
                 </h2>
                 <button className='Note__delete' type='button' onClick={this.handleclickDelete}>
                     DEL
-            </button>
+                </button>
+                <div className='Note__content'>
+                    {content}
+                </div>
                 <div className='Note__dates'>
                     <div className='Note__dates-modified'>
                         Last modified: {modified}

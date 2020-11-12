@@ -20,12 +20,12 @@ class NoteListMain extends Component {
     static propTypes = {
         notes: PropTypes.arrayOf(PropTypes.shape({
             content: PropTypes.string,
-            folderId: PropTypes.string,
-            id: PropTypes.string,
+            folderId: PropTypes.number,
+            id: PropTypes.number,
             modified: PropTypes.string,
             name: PropTypes.string
         })),
-        folderId: PropTypes.string
+        folderId: PropTypes.number
     }
 
 
@@ -51,10 +51,9 @@ class NoteListMain extends Component {
                         tag={Link}
                         to='/add-note'
                         type='button'
-                        className='NoteListMain__add-note-button'
-                    >
+                        className='NoteListMain__add-note-button'>
                         +NOTE
-                </CircleButton>
+                    </CircleButton>
                 </div>
             </section>
         )

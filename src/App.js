@@ -89,7 +89,7 @@ class App extends Component {
     return (
       <>
         <NotesError>
-          {['/', '/folder/:folderId'].map(path => (
+          {['/', '/folders/:folder_Id'].map(path => (
             <Route
               exact
               key={path}
@@ -97,11 +97,11 @@ class App extends Component {
               component={NoteListNav}
             />
           ))}
-          <Route path='/note/:noteId' component={NotePageNav} />
+          <Route path='/notes/:note_Id' component={NotePageNav} />
           <Route path='/add-note' component={AddNote} />
           <Route path='/add-folder' component={AddFolder} />
-          <Route path='/edit/note/:noteId' component={EditNote} />
-          <Route path='/edit/folder/:folderId' component={EditFolder} />
+          <Route path='/edit/notes/:note_Id' component={EditNote} />
+          <Route path='/edit/folders/:folder_Id' component={EditFolder} />
         </NotesError>
       </>
     )
@@ -110,7 +110,7 @@ class App extends Component {
     return (
       <>
         <NotesError>
-          {['/', '/folder/:folderId'].map(path => (
+          {['/', '/folders/:folder_Id'].map(path => (
             <Route
               exact
               key={path}
@@ -119,7 +119,7 @@ class App extends Component {
             />
           ))}
           <Route
-            path="/note/:noteId"
+            path="/notes/:note_Id"
             component={NotePageMain} />
         </NotesError>
       </>
