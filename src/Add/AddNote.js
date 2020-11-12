@@ -53,9 +53,6 @@ class AddNote extends Component {
         fetch('http://localhost:9090/api/notes', {
             method: 'POST',
             body: JSON.stringify(note),
-            /*headers: {
-                'content-type': 'application/json'
-            }*/
         })
             .then(res => {
                 if (!res.ok) {

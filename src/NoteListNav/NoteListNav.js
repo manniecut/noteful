@@ -37,7 +37,7 @@ class NoteListNav extends Component {
                             <NavLink
                                 className='NoteListNav__folder-link'
                                 to={`/folder/${folder.id}`}>
-                                {folder.name}
+                                {folder.title}
                             </NavLink>
                         </li>
                     )}
