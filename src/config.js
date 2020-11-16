@@ -1,3 +1,3 @@
 export default {
-    API_ENDPOINT: 'http://localhost:9090/api'
+    API_ENDPOINT: 'https://agile-river-24357.herokuapp.com/api'
   }
