@@ -61,14 +61,24 @@ class App extends Component {
   handleUpdateNote = updatedNote => {
     const newNotes = this.state.notes.map(note =>
       (note.id === updatedNote.id)
-        ? updatedNote
+        ? updatedNote.note
         : note
     )
+    console.log(newNotes)
     this.setState({
       notes: newNotes
     })
   };
 
+
+
+
+
+
+
+
+
+  
   handleUpdateFolder = updatedFolder => {
     const newFolders = this.state.folders.map(folder =>
       (folder.id === updatedFolder.id)

@@ -55,7 +55,7 @@ class AddNote extends Component {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
-              },
+            },
             body: JSON.stringify(note),
         })
             .then(res => {
@@ -81,7 +81,6 @@ class AddNote extends Component {
         this.setState({
             selectedFolderId: { value: folderid }
         })
-        console.log(this.state)
     }
 
     handleNoteTitleUpdate = name => {
@@ -105,7 +104,6 @@ class AddNote extends Component {
 
     render() {
         const folders = this.context.folders;
-        console.log(folders)
         return (
             <section className='AddNote'>
                 <h2>Add a new note</h2>
@@ -121,8 +119,10 @@ class AddNote extends Component {
                         <select
                             id='folder'
                             name='folder'
+                            defaultValue='$defaultselection'
                             onChange={e => this.handleFolderSelection(e.target.value)}
                         >
+                         <option disabled value='$defaultselection'> -- select Folder -- </option>
                             {folders.map(option => (
                                 <option
                                     key={option.id}

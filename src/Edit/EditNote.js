@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NotesContext from '../NotesContext';
 import ValidError from '../ValidError';
 import NotefulForm from '../NotefulForm/NotefulForm'
+import { format } from 'date-fns';
 import PropTypes from 'prop-types';
 import config from '../config';
 
@@ -40,7 +41,7 @@ class EditNote extends Component {
     }
 
     componentDidMount() {
-        const noteId = this.props.match.params.noteId
+        const noteId = this.props.match.params.note_Id
         fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
             method: 'GET'
         })
@@ -77,27 +78,31 @@ class EditNote extends Component {
             folderid: selectedFolderId.value,
             title: noteTitle.value,
             content: noteContent.value,
-            modified: new Date(),
+            //modified: format(new Date(), 'yyyy-mm-do,HH:mm:ss'),
             id: noteId.value
         }
+        console.log(note)
         this.setState({ error: null })
-        fetch('http://localhost:9090/api/notes', {
+        fetch(`${config.API_ENDPOINT}/notes/${noteId.value}`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json',
-              },
+            },
             body: JSON.stringify(note),
         })
             .then(res => {
-                if (!res.ok) {
-                    return res.json().then(error => {
-                        throw error
-                    })
-                }
-                return res.json()
+                if (!res.ok)
+                    return res
+                        .then(e => Promise.reject(e))
+                return res
             })
-            .then(note => {
-                this.context.updateNote(note)
+            .then(() => {
+                note.modified = format(new Date(), 'yyyy-LL-dd,HH:mm:ss.sss');
+                const updatedNote = {
+                    note: note,
+                    id: noteId.value
+                }
+                this.context.updateNote(updatedNote)
                 this.props.history.push('/')
             })
             .catch(error => {
@@ -134,12 +139,12 @@ class EditNote extends Component {
 
     render() {
         const folders = this.context.folders;
-        const folderid = this.state.selectedFolderId.value
+        const folderId = this.state.selectedFolderId.value
         const title = this.state.noteTitle.value
         const content = this.state.noteContent.value
         return (
             <section className='EditNote'>
-                <h2>Add a new note</h2>
+                <h2>Edit note</h2>
                 <NotefulForm
                     className='AddNote__form'
                     onSubmit={this.handleSubmit}
@@ -152,7 +157,7 @@ class EditNote extends Component {
                         <select
                             id='folder'
                             name='folder'
-                            value={folderid}
+                            defaultValue={folderId}
                             onChange={e => this.handleFolderSelection(e.target.value)}
                         >
                             {folders.map(option => (
@@ -160,7 +165,7 @@ class EditNote extends Component {
                                     key={option.id}
                                     value={option.id}
                                 >
-                                    {option.name}
+                                    {option.title}
                                 </option>)
                             )}
                         </select>

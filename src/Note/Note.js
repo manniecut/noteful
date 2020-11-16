@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import NotesContext from '../NotesContext';
-import config from '../config'
-import './Note.css'
+import config from '../config';
+import './Note.css';
 
 
 class Note extends React.Component {
@@ -24,8 +24,9 @@ class Note extends React.Component {
         })
             .then(res => {
                 if (!res.ok)
-                    return res.json().then(e => Promise.reject(e))
-                return res.json()
+                    return res
+                        .then(e => Promise.reject(e))
+                return res
             })
             .then(() => {
                 this.context.deleteNote(noteId)
