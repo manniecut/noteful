@@ -23,14 +23,14 @@ class EditFolder extends Component {
 
         this.state = {
             error: null,
-            folderId: '',
+            folderid: '',
             folderTitle: '',
         };
     }
 
     componentDidMount() {
-        const folderId = this.props.match.params.folderId
-        fetch(`${config.API_ENDPOINT}/folders/${folderId}`, {
+        const folderid = this.props.match.params.folderid
+        fetch(`${config.API_ENDPOINT}/folders/${folderid}`, {
             method: 'GET'
         })
             .then(res => {
@@ -60,7 +60,7 @@ class EditFolder extends Component {
     handleSubmit = e => {
         e.preventDefault();
         const folder = {
-            id: this.state.folderId,
+            id: this.state.folderid,
             title: this.state.folderTitle
         }
 

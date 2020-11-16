@@ -77,9 +77,9 @@ class AddNote extends Component {
     }
 
 
-    handleFolderSelection = folderId => {
+    handleFolderSelection = folderid => {
         this.setState({
-            selectedFolderId: { value: folderId }
+            selectedFolderId: { value: folderid }
         })
         console.log(this.state)
     }

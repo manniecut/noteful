@@ -54,7 +54,7 @@ class EditNote extends Component {
             })
             .then(note => {
                 this.setState({
-                    selectedFolderId: { value: note.folderId },
+                    selectedFolderId: { value: note.folderid },
                     noteTitle: { value: note.title },
                     noteContent: { value: note.content },
                     noteId: { value: note.id }
@@ -74,7 +74,7 @@ class EditNote extends Component {
         e.preventDefault();
         const { selectedFolderId, noteTitle, noteContent, noteId } = this.state;
         const note = {
-            folderId: selectedFolderId.value,
+            folderid: selectedFolderId.value,
             title: noteTitle.value,
             content: noteContent.value,
             modified: new Date(),
@@ -134,7 +134,7 @@ class EditNote extends Component {
 
     render() {
         const folders = this.context.folders;
-        const folderId = this.state.selectedFolderId.value
+        const folderid = this.state.selectedFolderId.value
         const title = this.state.noteTitle.value
         const content = this.state.noteContent.value
         return (
@@ -152,7 +152,7 @@ class EditNote extends Component {
                         <select
                             id='folder'
                             name='folder'
-                            value={folderId}
+                            value={folderid}
                             onChange={e => this.handleFolderSelection(e.target.value)}
                         >
                             {folders.map(option => (

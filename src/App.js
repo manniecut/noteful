@@ -20,7 +20,7 @@ class App extends Component {
     error: null
   };
 
-  /********************************************** */
+  /****** Loads Notes/Folders into State at Startup **************************************** */
 
   componentDidMount() {
     Promise.all([
@@ -44,7 +44,7 @@ class App extends Component {
 
 
 
-  /************************************************ */
+  /******** Create/Update/Delete Functions **************************************** */
 
   handleAddFolder = folder => {
     this.setState({
@@ -86,14 +86,14 @@ class App extends Component {
     });
   };
 
-  handleDeleteFolder = (folderId) => {
+  handleDeleteFolder = (folderid) => {
     this.setState({
-      folders: this.state.folders.filter(folder => folder.id !== folderId)
+      folders: this.state.folders.filter(folder => folder.id !== folderid)
     });
   };
 
 
-  /***************************************************** */
+  /***** Renders the Navigation ************************************************ */
 
   renderNavRoutes() {
     return (
@@ -116,6 +116,10 @@ class App extends Component {
       </>
     )
   }
+
+
+  /****** Renders Main Window ****************************************/
+
   renderMainRoutes() {
     return (
       <>
@@ -153,20 +157,26 @@ class App extends Component {
   }
 
 
-  /*************************************** */
+  /**** App Render *********************************** */
 
   render() {
     const value = {
+
       notes: this.state.notes,
       folders: this.state.folders,
+
       addNote: this.handleAddNote,
       addFolder: this.handleAddFolder,
+
       deleteNote: this.handleDeleteNote,
       deleteFolder: this.handleDeleteFolder,
+
       updateNote: this.handleUpdateNote,
       updateFolder: this.handleUpdateFolder,
+
       fetchError: this.state.error
     };
+
     return (
       <NotesContext.Provider value={value}>
         <div className='App' >
