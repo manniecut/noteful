@@ -7,8 +7,5 @@ export const findNote = (notes = [], noteId) =>
 export const getNotesForFolder = (notes = [], folderId) => (
   (!folderId)
     ? notes
-    : notes.filter(note => note.folderId === folderId)
+    : notes.filter(note => parseInt(note.folderId) === parseInt(folderId))
 )
-export const getRandomHexString = () => {
-  return [...Array(8)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
-}

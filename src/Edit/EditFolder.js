@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import NotesContext from '../NotesContext';
 import ValidError from '../ValidError';
+import config from '../config';
 import PropTypes from 'prop-types';
+import NotefulForm from '../NotefulForm/NotefulForm';
 
 class EditFolder extends Component {
     static contextType = NotesContext;
@@ -28,7 +30,7 @@ class EditFolder extends Component {
 
     componentDidMount() {
         const folderId = this.props.match.params.folderId
-        fetch(`http://localhost:9090/api/folders/${folderId}`, {
+        fetch(`${config.API_ENDPOINT}/folders/${folderId}`, {
             method: 'GET'
         })
             .then(res => {
@@ -65,10 +67,10 @@ class EditFolder extends Component {
         this.setState({ error: null })
         fetch('http://localhost:9090/api/folders', {
             method: 'PATCH',
+            headers: {
+                'content-type': 'application/json',
+              },
             body: JSON.stringify(folder),
-            /*headers: {
-                'content-type': 'application/json'
-            }*/
         })
             .then(res => {
                 if (!res.ok) {
@@ -107,7 +109,7 @@ class EditFolder extends Component {
         return (
             <section className='AddFolder'>
                 <h2>Add a new folder</h2>
-                <form
+                <NotefulForm
                     className='AddFolder__form'
                     onSubmit={this.handleSubmit}
                 >
@@ -141,7 +143,7 @@ class EditFolder extends Component {
                             Save
                         </button>
                     </div>
-                </form>
+                </NotefulForm>
             </section>
         );
     }

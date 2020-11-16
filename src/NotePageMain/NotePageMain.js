@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Note from '../Note/Note';
 import NotesContext from '../NotesContext';
 import { findNote } from '../notes-helpers';
-//import PropTypes from 'prop-types';
 import './NotePageMain.css';
+import NavCircleButton from '../CircleButton/CircleButton';
 
 class NotePageMain extends Component {
     static defaultProps = {
@@ -12,18 +13,6 @@ class NotePageMain extends Component {
         }
     }
     static contextType = NotesContext
-    /*
-        static propTypes = {
-            notes: PropTypes.arrayOf(PropTypes.shape({
-                content: PropTypes.string,
-                folderId: PropTypes.number,
-                id: PropTypes.number,
-                modified: PropTypes.string,
-                name: PropTypes.string
-            })),
-            noteId: PropTypes.string
-        }
-    */
 
     handleDeleteNote = (noteId) => {
         this.props.history.push('/')
@@ -37,7 +26,7 @@ class NotePageMain extends Component {
             <section className='NotePageMain'>
                 <Note
                     id={note.id}
-                    name={note.title}
+                    title={note.title}
                     modified={note.modified}
                     onDeleteNote={this.handleDeleteNote}
                 />
@@ -46,6 +35,13 @@ class NotePageMain extends Component {
                         <p key={i}>{para}</p>
                     )}
                 </div>
+                <NavCircleButton
+                    tag={Link}
+                    to={`/edit/notes/${note.id}`}
+                    type='button'
+                    className='NoteListMain__edit-note-button'>
+                    EDIT
+                    </NavCircleButton>
             </section>
         )
 

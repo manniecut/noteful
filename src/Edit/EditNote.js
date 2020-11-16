@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import NotesContext from '../NotesContext';
 import ValidError from '../ValidError';
+import NotefulForm from '../NotefulForm/NotefulForm'
 import PropTypes from 'prop-types';
+import config from '../config';
 
 class EditNote extends Component {
     static contextType = NotesContext;
@@ -39,7 +41,7 @@ class EditNote extends Component {
 
     componentDidMount() {
         const noteId = this.props.match.params.noteId
-        fetch(`https://localhost:9090/api/notes/${noteId}`, {
+        fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
             method: 'GET'
         })
             .then(res => {
@@ -81,10 +83,10 @@ class EditNote extends Component {
         this.setState({ error: null })
         fetch('http://localhost:9090/api/notes', {
             method: 'PATCH',
+            headers: {
+                'content-type': 'application/json',
+              },
             body: JSON.stringify(note),
-            /*headers: {
-                'content-type': 'application/json'
-            }*/
         })
             .then(res => {
                 if (!res.ok) {
@@ -138,7 +140,7 @@ class EditNote extends Component {
         return (
             <section className='EditNote'>
                 <h2>Add a new note</h2>
-                <form
+                <NotefulForm
                     className='AddNote__form'
                     onSubmit={this.handleSubmit}
                 >
@@ -198,7 +200,7 @@ class EditNote extends Component {
                             Save
                         </button>
                     </div>
-                </form>
+                </NotefulForm>
 
             </section>
         );

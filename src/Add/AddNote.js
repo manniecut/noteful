@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import NotesContext from '../NotesContext';
 import ValidError from '../ValidError';
 import PropTypes from 'prop-types';
+import config from '../config'
+import NotefulForm from '../NotefulForm/NotefulForm';
 
 class AddNote extends Component {
     static contextType = NotesContext;
@@ -43,15 +45,17 @@ class AddNote extends Component {
         e.preventDefault();
         const { selectedFolderId, noteTitle, noteContent } = this.state;
         const note = {
-            folderId: selectedFolderId.value,
+            folderid: selectedFolderId.value,
             title: noteTitle.value,
             content: noteContent.value,
             modified: new Date(),
         }
-
         this.setState({ error: null })
-        fetch('http://localhost:9090/api/notes', {
+        fetch(`${config.API_ENDPOINT}/notes`, {
             method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+              },
             body: JSON.stringify(note),
         })
             .then(res => {
@@ -73,10 +77,11 @@ class AddNote extends Component {
     }
 
 
-    handleFolderSelection = folder => {
+    handleFolderSelection = folderId => {
         this.setState({
-            selectedFolder: { value: folder }
+            selectedFolderId: { value: folderId }
         })
+        console.log(this.state)
     }
 
     handleNoteTitleUpdate = name => {
@@ -100,10 +105,11 @@ class AddNote extends Component {
 
     render() {
         const folders = this.context.folders;
+        console.log(folders)
         return (
             <section className='AddNote'>
                 <h2>Add a new note</h2>
-                <form
+                <NotefulForm
                     className='AddNote__form'
                     onSubmit={this.handleSubmit}
                 >
@@ -111,7 +117,7 @@ class AddNote extends Component {
                         {this.state.error && <p>{this.state.error.message}</p>}
                     </div>
                     <div>
-                        <label htmlFor='folder'>Select a Folder: </label>
+                        <label htmlFor='folder'>Select a Folder:</label>
                         <select
                             id='folder'
                             name='folder'
@@ -122,7 +128,7 @@ class AddNote extends Component {
                                     key={option.id}
                                     value={option.id}
                                 >
-                                    {option.name}
+                                    {option.title}
                                 </option>)
                             )}
                         </select>
@@ -162,7 +168,7 @@ class AddNote extends Component {
                             Save
                         </button>
                     </div>
-                </form>
+                </NotefulForm>
 
             </section>
         );

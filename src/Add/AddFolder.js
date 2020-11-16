@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
+import NotefulForm from '../NotefulForm/NotefulForm';
 import NotesContext from '../NotesContext';
 import ValidError from '../ValidError';
-import PropTypes from 'prop-types';
+import config from '../config';
 
 class AddFolder extends Component {
-    static contextType = NotesContext;
-
-    static defaultProps = {
-        history: {
-            goBack: () => { }
-        }
-    }
-
-    static propTypes = {
-        history: PropTypes.object
-    }
-
     constructor(props) {
         super(props);
 
@@ -28,6 +17,13 @@ class AddFolder extends Component {
         }
     }
 
+    static defaultProps = {
+        history: {
+            goBack: () => { }
+        }
+    }
+
+    static contextType = NotesContext;
 
     validateContent() {
         const title = this.state.folderTitle.value.trim();
@@ -53,8 +49,11 @@ class AddFolder extends Component {
         }
 
         this.setState({ error: null })
-        fetch('http://localhost:9090/api/folders', {
+        fetch(`${config.API_ENDPOINT}/folders`, {
             method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+              },
             body: JSON.stringify(folder),
         })
             .then(res => {
@@ -79,7 +78,7 @@ class AddFolder extends Component {
         return (
             <section className='AddFolder'>
                 <h2>Add a new folder</h2>
-                <form
+                <NotefulForm
                     className='AddFolder__form'
                     onSubmit={this.handleSubmit}
                 >
@@ -113,7 +112,7 @@ class AddFolder extends Component {
                             Save
                         </button>
                     </div>
-                </form>
+                </NotefulForm>
             </section>
         );
     }

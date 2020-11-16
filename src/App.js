@@ -10,6 +10,7 @@ import AddFolder from './Add/AddFolder';
 import AddNote from './Add/AddNote';
 import EditNote from './Edit/EditNote';
 import EditFolder from './Edit/EditFolder';
+import config from './config';
 import './App.css';
 
 class App extends Component {
@@ -19,10 +20,12 @@ class App extends Component {
     error: null
   };
 
+  /********************************************** */
+
   componentDidMount() {
     Promise.all([
-      fetch('http://localhost:9090/api/notes'),
-      fetch('http://localhost:9090/api/folders')
+      fetch(`${config.API_ENDPOINT}/notes`),
+      fetch(`${config.API_ENDPOINT}/folders`)
     ])
       .then(([notesResponse, foldersResponse]) => {
         if (!notesResponse.ok)
@@ -39,17 +42,9 @@ class App extends Component {
       });
   }
 
-  handleDeleteNote = (noteId) => {
-    this.setState({
-      notes: this.state.notes.filter(note => note.id !== noteId)
-    });
-  };
 
-  handleDeleteFolder = (folderId) => {
-    this.setState({
-      folders: this.state.folders.filter(folder => folder.id !== folderId)
-    });
-  };
+
+  /************************************************ */
 
   handleAddFolder = folder => {
     this.setState({
@@ -85,6 +80,21 @@ class App extends Component {
     })
   };
 
+  handleDeleteNote = (noteId) => {
+    this.setState({
+      notes: this.state.notes.filter(note => note.id !== noteId)
+    });
+  };
+
+  handleDeleteFolder = (folderId) => {
+    this.setState({
+      folders: this.state.folders.filter(folder => folder.id !== folderId)
+    });
+  };
+
+
+  /***************************************************** */
+
   renderNavRoutes() {
     return (
       <>
@@ -98,10 +108,10 @@ class App extends Component {
             />
           ))}
           <Route path='/notes/:note_Id' component={NotePageNav} />
-          <Route path='/add-note' component={AddNote} />
-          <Route path='/add-folder' component={AddFolder} />
-          <Route path='/edit/notes/:note_Id' component={EditNote} />
-          <Route path='/edit/folders/:folder_Id' component={EditFolder} />
+          <Route path='/add-note' component={NotePageNav} />
+          <Route path='/add-folder' component={NotePageNav} />
+          <Route path='/edit/notes/:note_Id' component={NotePageNav} />
+          <Route path='/edit/folders/:folder_Id' component={NotePageNav} />
         </NotesError>
       </>
     )
@@ -121,10 +131,30 @@ class App extends Component {
           <Route
             path="/notes/:note_Id"
             component={NotePageMain} />
+          <Route
+            path='/add-folder'
+            component={AddFolder}
+          />
+          <Route
+            path='/add-note'
+            component={AddNote}
+          />
+          <Route
+            path='/edit/notes/:note_Id'
+            component={EditNote}
+          />
+          <Route
+            path='/edit/folders/:folder_Id'
+            component={EditFolder}
+          />
         </NotesError>
       </>
     )
   }
+
+
+  /*************************************** */
+
   render() {
     const value = {
       notes: this.state.notes,
@@ -143,7 +173,7 @@ class App extends Component {
           <nav className="App__nav">{this.renderNavRoutes()}</nav>
           <header className="App__header">
             <h1>
-              <Link to='/'>Noteful</Link>{'  '}
+              <Link to='/'>Noteful</Link>
             </h1>
           </header>
           <main className="App__main">{this.renderMainRoutes()}</main>
@@ -152,5 +182,6 @@ class App extends Component {
     );
   }
 }
+
 
 export default App;

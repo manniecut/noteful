@@ -4,35 +4,21 @@ import Note from '../Note/Note'
 import CircleButton from '../CircleButton/CircleButton'
 import NotesContext from '../NotesContext';
 import { getNotesForFolder } from '../notes-helpers'
-import PropTypes from 'prop-types';
 import './NoteListMain.css'
 
 class NoteListMain extends Component {
     static defaultProps = {
         match: {
             params: {}
-        },
-        notes: []
+        }
     }
 
     static contextType = NotesContext
 
-    static propTypes = {
-        notes: PropTypes.arrayOf(PropTypes.shape({
-            content: PropTypes.string,
-            folderId: PropTypes.number,
-            id: PropTypes.number,
-            modified: PropTypes.string,
-            name: PropTypes.string
-        })),
-        folderId: PropTypes.number
-    }
-
-
     render() {
-        const { folderId } = this.props.match.params
+        const { folder_Id } = this.props.match.params
         const { notes = [] } = this.context
-        const notesForFolder = getNotesForFolder(notes, folderId)
+        const notesForFolder = getNotesForFolder(notes, folder_Id)
         return (
             <section className='NoteListMain'>
                 <ul>
@@ -40,7 +26,7 @@ class NoteListMain extends Component {
                         <li key={note.id}>
                             <Note
                                 id={note.id}
-                                name={note.title}
+                                title={note.title}
                                 modified={note.modified}
                             />
                         </li>
