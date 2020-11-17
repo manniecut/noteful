@@ -65,7 +65,7 @@ class EditFolder extends Component {
         }
 
         this.setState({ error: null })
-        fetch('http://localhost:9090/api/folders', {
+        fetch(`${config.API_ENDPOINT}/folders`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json',
